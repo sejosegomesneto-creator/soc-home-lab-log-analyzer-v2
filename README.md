@@ -18,5 +18,8 @@ Simular atividades de um **SOC (Security Operations Center)** analisando logs e 
 - Segurança da Informação (Blue Team)
 
 ## Como executar
+
+1. Clone o repositório:
 ```bash
-python analyzer.py
+git clone https://github.com/sejosegomesneto-criador/soc-home-lab-log-analyzer-v2.git
+
