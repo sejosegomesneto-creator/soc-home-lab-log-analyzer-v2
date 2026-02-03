@@ -1,6 +1,6 @@
-# SOC Home Lab – Log Analyzer (v2) 🔐
+# Laboratório doméstico SOC – Analisador de logs (v2) 🔐
 
-Projeto prático de **Segurança da Informação / Blue Team**, focado na análise de logs Linux (`auth.log`) para identificar eventos de autenticação via SSH.
+Projeto prático de **Segurança da Informação / Blue Team**, focado na análise de logs Linux (`auth.log`) para identificação de eventos de autenticação SSH.
 
 ## Objetivo
 Simular atividades de um **SOC (Security Operations Center)** analisando logs e destacando padrões de falhas e acessos legítimos.
@@ -9,7 +9,7 @@ Simular atividades de um **SOC (Security Operations Center)** analisando logs e 
 - Detecta tentativas de login malsucedidas (`Failed password`)
 - Detecta acessos bem-sucedidos (`Accepted password`)
 - Conta IPs com maior número de falhas (Top 5)
-- Gera relatório no terminal
+- Gera relatório diretamente no terminal
 
 ## Tecnologias
 - Python
@@ -21,5 +21,4 @@ Simular atividades de um **SOC (Security Operations Center)** analisando logs e 
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/sejosegomesneto-criador/soc-home-lab-log-analyzer-v2.git
-
+git clone https://github.com/sejosegomesneto-creator/soc-home-lab-log-analyzer-v2.git
