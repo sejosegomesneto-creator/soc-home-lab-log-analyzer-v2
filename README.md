@@ -1,4 +1,4 @@
-# Laboratório doméstico SOC – Analisador de logs (v2) 🔐
+Laboratório SOC – Log Analyzer (v3)
 
 Projeto prático de **Segurança da Informação / Blue Team**, focado na análise de logs Linux (`auth.log`) para identificação de eventos de autenticação SSH.
 
