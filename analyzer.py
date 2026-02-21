@@ -1,46 +1,58 @@
 import re
-from collections import Counter
+import json
+from datetime import datetime
 
 LOG_FILE = "sample_logs/auth.log"
+THRESHOLD = 5  # número de tentativas para gerar alerta
 
-def analyze_log(file_path):
-    with open(file_path, "r") as file:
-        logs = file.readlines()
+failed_pattern = re.compile(r"Failed password.*from (\d+\.\d+\.\d+\.\d+)")
 
-    failed_logins = []
-    success_logins = []
+ip_attempts = {}
 
-    for line in logs:
-        if "Failed password" in line:
-            failed_logins.append(line)
-        elif "Accepted password" in line:
-            success_logins.append(line)
-
-    return failed_logins, success_logins
-
-def extract_ips_from_failed(failed_logins):
-    ips = []
-    for line in failed_logins:
-        match = re.search(r"from (\d+\.\d+\.\d+\.\d+)", line)
-        if match:
-            ips.append(match.group(1))
-    return ips
-
-def generate_report(failed, success):
-    print("=== SOC HOME LAB REPORT (v2) ===\n")
-    print(f"Falhas de login: {len(failed)}")
-    print(f"Acessos bem-sucedidos: {len(success)}\n")
-
-    ips = extract_ips_from_failed(failed)
-    if ips:
-        counter = Counter(ips)
-        print("IPs com mais tentativas de falha:")
-        for ip, count in counter.most_common(5):
-            print(f"- {ip}: {count} tentativas")
+def severity_level(attempts):
+    if attempts >= 10:
+        return "High"
+    elif attempts >= 6:
+        return "Medium"
     else:
-        print("Nenhum IP encontrado nas falhas.")
+        return "Low"
+
+def generate_alert(ip, attempts):
+    alert = {
+        "alert_type": "SSH Brute Force",
+        "source_ip": ip,
+        "attempts": attempts,
+        "severity": severity_level(attempts),
+        "mitre": {
+            "technique_id": "T1110",
+            "technique_name": "Brute Force",
+            "tactic": "Credential Access"
+        },
+        "recommended_action": [
+            "Bloquear IP no firewall",
+            "Verificar tentativas em outros serviços",
+            "Reforçar política de senha"
+        ],
+        "timestamp": datetime.now().isoformat()
+    }
+
+    filename = f"alert_{ip.replace('.', '_')}.json"
+    with open(filename, "w") as f:
+        json.dump(alert, f, indent=4)
+
+    print(f"[ALERTA GERADO] {filename}")
+
+def analyze():
+    with open(LOG_FILE, "r") as file:
+        for line in file:
+            match = failed_pattern.search(line)
+            if match:
+                ip = match.group(1)
+                ip_attempts[ip] = ip_attempts.get(ip, 0) + 1
+
+    for ip, attempts in ip_attempts.items():
+        if attempts >= THRESHOLD:
+            generate_alert(ip, attempts)
 
 if __name__ == "__main__":
-    failed, success = analyze_log(LOG_FILE)
-    generate_report(failed, success)
-
+    analyze()
