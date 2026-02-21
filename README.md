@@ -5,11 +5,17 @@ Projeto prático de **Segurança da Informação / Blue Team**, focado na análi
 ## Objetivo
 Simular atividades de um **SOC (Security Operations Center)** analisando logs e destacando padrões de falhas e acessos legítimos.
 
-## Funcionalidades
-- Detecta tentativas de login malsucedidas (`Failed password`)
-- Detecta acessos bem-sucedidos (`Accepted password`)
-- Conta IPs com maior número de falhas (Top 5)
-- Gera relatório diretamente no terminal
+🔔 Funcionalidades da versão v3
+
+Detecção de brute force SSH
+
+Classificação de severidade (Low, Medium, High)
+
+Mapeamento MITRE ATT&CK (T1110)
+
+Geração de alerta em JSON
+
+Simulação de fluxo SOC N1
 
 ## Tecnologias
 - Python
